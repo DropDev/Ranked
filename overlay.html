@@ -42,38 +42,21 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
   color:#ffffff;
   text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88;
   animation: glowPulse 2s infinite alternate;
+  margin-bottom:10px;
 }
 
 /* Glow animation */
 @keyframes glowPulse {
-  0% {
-    text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88;
-    color:#ffffff;
-  }
-  50% {
-    text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88, 0 0 60px #00ff88;
-    color:#aaffaa;
-  }
-  100% {
-    text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88;
-    color:#ffffff;
-  }
+  0% { text-shadow:0 0 10px #00ff88,0 0 20px #00ff88,0 0 30px #00ff88;color:#ffffff;}
+  50% { text-shadow:0 0 20px #00ff88,0 0 40px #00ff88,0 0 60px #00ff88;color:#aaffaa;}
+  100% { text-shadow:0 0 10px #00ff88,0 0 20px #00ff88,0 0 30px #00ff88;color:#ffffff;}
 }
 
-/* Daily SR change popup */
-.dailyChange {
-  font-size:36px;
+/* Daily SR change text below SR */
+#dailyChange {
+  font-size:32px;
   font-weight:bold;
-  position:absolute;
-  top:50px;
-  left:220px;
-  animation: float 1.5s forwards;
-}
-
-/* Floating animation */
-@keyframes float {
-  0%{opacity:1; transform:translateY(0);}
-  100%{opacity:0; transform:translateY(-60px);}
+  color:white;
 }
 
 /* Iridescent badge animation */
@@ -94,6 +77,7 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
   <div>
     <div class="rank" id="rankText">BRONZE I</div>
     <div class="sr" id="srText">0 SR</div>
+    <div id="dailyChange">Daily SR Change: +0</div>
   </div>
 </div>
 
@@ -135,6 +119,7 @@ function updateSR(newSR){
   const srElement = document.getElementById("srText");
   const badge = document.getElementById("badge");
   const rankText = document.getElementById("rankText");
+  const dailyChangeEl = document.getElementById("dailyChange");
   
   currentSR = newSR;
   const rankData = getRankData(newSR);
@@ -148,20 +133,11 @@ function updateSR(newSR){
   } else {
     badge.classList.remove("iridescent");
   }
-
-  // Show daily SR change
+  
+  // Update daily SR change below
   const dailyChange = currentSR - startSR;
-  showDailyChange(dailyChange);
-}
-
-// Show daily SR change popup (+green/-red)
-function showDailyChange(amount){
-  const popup = document.createElement("div");
-  popup.className="dailyChange";
-  popup.innerText = (amount>=0?"+":"") + amount;
-  popup.style.color = (amount>=0?"#00ff88":"#ff3355");
-  document.getElementById("container").appendChild(popup);
-  setTimeout(()=>{popup.remove();},1500);
+  dailyChangeEl.innerText = "Daily SR Change: " + (dailyChange>=0?"+":"") + dailyChange;
+  dailyChangeEl.style.color = dailyChange>=0 ? "#00ff88" : "#ff3355";
 }
 
 // --- Read start SR and current SR from URL ---
