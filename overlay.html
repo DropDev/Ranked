@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BO7 Ranked Overlay</title>
+<style>
+body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
+#container { display:flex; align-items:center; padding:20px 30px; background:linear-gradient(135deg, rgba(10,10,15,0.85), rgba(25,25,35,0.95)); border-radius:20px; backdrop-filter:blur(10px); position:fixed; bottom:50px; left:50px; z-index:9999;}
+#badge { width:180px; height:180px; margin-right:25px; transition:all 0.4s ease;}
+.rank { font-size:36px; color:white; letter-spacing:2px; }
+.sr { font-size:64px; font-weight:bold; transition:0.3s;}
+.sr.up { color:#00ff88; text-shadow:0 0 20px #00ff88; }
+.sr.down { color:#ff3355; text-shadow:0 0 20px #ff3355; }
+.iridescent { animation: shimmer 3s infinite linear; }
+@keyframes shimmer { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px #00ffff);} 50% { filter: hue-rotate(180deg) drop-shadow(0 0 30px #ff00ff);} 100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px #00ffff);} }
+.popup { position:absolute; font-size:36px; font-weight:bold; animation: float 1.5s forwards;}
+@keyframes float { 0%{opacity:1; transform:translateY(0);} 100%{opacity:0; transform:translateY(-60px);} }
+</style>
+</head>
+<body>
+<div id="container">
+  <img id="badge" src="badges/bronze_1.png">
+  <div>
+    <div class="rank" id="rankText">BRONZE I</div>
+    <div class="sr" id="srText">0 SR</div>
+  </div>
+</div>
+<script>
+let currentSR=0;
+function getRankData(sr){
+const ranks=[
+{min:0,name:"BRONZE I",badge:"badges/bronze_1.png"},
+{min:300,name:"BRONZE II",badge:"badges/bronze_2.png"},
+{min:600,name:"BRONZE III",badge:"badges/bronze_3.png"},
+{min:900,name:"SILVER I",badge:"badges/silver_1.png"},
+{min:1200,name:"SILVER II",badge:"badges/silver_2.png"},
+{min:1500,name:"SILVER III",badge:"badges/silver_3.png"},
+{min:1800,name:"GOLD I",badge:"badges/gold_1.png"},
+{min:2100,name:"GOLD II",badge:"badges/gold_2.png"},
+{min:2400,name:"GOLD III",badge:"badges/gold_3.png"},
+{min:2700,name:"PLATINUM I",badge:"badges/platinum_1.png"},
+{min:3000,name:"PLATINUM II",badge:"badges/platinum_2.png"},
+{min:3300,name:"PLATINUM III",badge:"badges/platinum_3.png"},
+{min:3600,name:"DIAMOND I",badge:"badges/diamond_1.png"},
+{min:4000,name:"DIAMOND II",badge:"badges/diamond_2.png"},
+{min:4400,name:"DIAMOND III",badge:"badges/diamond_3.png"},
+{min:4800,name:"CRIMSON I",badge:"badges/crimson_1.png"},
+{min:5400,name:"CRIMSON II",badge:"badges/crimson_2.png"},
+{min:6000,name:"CRIMSON III",badge:"badges/crimson_3.png"},
+{min:7000,name:"IRIDESCENT",badge:"badges/iridescent.png"},
+{min:10000,name:"TOP 250",badge:"badges/top250.png"}
+];
+let current=ranks[0];
+for(let i=0;i<ranks.length;i++){if(sr>=ranks[i].min){current=ranks[i];}}
+return current;
+}
+function updateSR(newSR){
+const srElement=document.getElementById("srText");
+const badge=document.getElementById("badge");
+const rankText=document.getElementById("rankText");
+let diff=newSR-currentSR;
+if(diff>0){srElement.classList.remove("down"); srElement.classList.add("up"); showPopup("+"+diff,"#00ff88");}
+else if(diff<0){srElement.classList.remove("up"); srElement.classList.add("down"); showPopup(diff,"#ff3355");}
+setTimeout(()=>{srElement.classList.remove("up","down");},2000);
+currentSR=newSR;
+const rankData=getRankData(newSR);
+srElement.innerText=newSR+" SR";
+rankText.innerText=rankData.name;
+badge.src=rankData.badge;
+if(rankData.name==="IRIDESCENT"||rankData.name==="TOP 250"){badge.classList.add("iridescent");}else{badge.classList.remove("iridescent");}
+}
+function showPopup(text,color){
+const popup=document.createElement("div");
+popup.className="popup";
+popup.style.color=color;
+popup.innerText=text;
+popup.style.left="220px"; popup.style.top="50px";
+document.getElementById("container").appendChild(popup);
+setTimeout(()=>{popup.remove();},1500);
+}
+updateSR(0);
+</script>
+</body>
+</html>
