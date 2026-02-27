@@ -6,7 +6,7 @@
 <style>
 body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
 
-/* Container for overlay, positioned bottom-left */
+/* Container for overlay */
 #container {
   display:flex;
   align-items:center;
@@ -28,14 +28,14 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
   transition:all 0.4s ease;
 }
 
-/* Rank name text */
+/* Rank name */
 .rank {
   font-size:36px;
   color:white;
   letter-spacing:2px;
 }
 
-/* SR text with continuous glowing animation */
+/* Current SR glowing continuously */
 .sr {
   font-size:64px;
   font-weight:bold;
@@ -60,6 +60,22 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
   }
 }
 
+/* Daily SR change popup */
+.dailyChange {
+  font-size:36px;
+  font-weight:bold;
+  position:absolute;
+  top:50px;
+  left:220px;
+  animation: float 1.5s forwards;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%{opacity:1; transform:translateY(0);}
+  100%{opacity:0; transform:translateY(-60px);}
+}
+
 /* Iridescent badge animation */
 .iridescent {
   animation: shimmer 3s infinite linear;
@@ -69,18 +85,6 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
   0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px #00ffff);}
   50% { filter: hue-rotate(180deg) drop-shadow(0 0 30px #ff00ff);}
   100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px #00ffff);}
-}
-
-/* SR gain/loss popups */
-.popup {
-  position:absolute;
-  font-size:36px;
-  font-weight:bold;
-  animation: float 1.5s forwards;
-}
-@keyframes float {
-  0%{opacity:1; transform:translateY(0);}
-  100%{opacity:0; transform:translateY(-60px);}
 }
 </style>
 </head>
@@ -94,9 +98,10 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
 </div>
 
 <script>
+let startSR = 0;
 let currentSR = 0;
 
-/* Define all ranks and corresponding badge paths */
+// Rank definitions
 function getRankData(sr) {
   const ranks = [
     {min:0,name:"BRONZE I",badge:"badges/bronze_1.png"},
@@ -125,14 +130,15 @@ function getRankData(sr) {
   return current;
 }
 
-/* Update SR, badge, and rank text */
+// Update SR, rank, badge, and daily change
 function updateSR(newSR){
   const srElement = document.getElementById("srText");
   const badge = document.getElementById("badge");
   const rankText = document.getElementById("rankText");
-
+  
   currentSR = newSR;
   const rankData = getRankData(newSR);
+  
   srElement.innerText = newSR + " SR";
   rankText.innerText = rankData.name;
   badge.src = rankData.badge;
@@ -142,29 +148,31 @@ function updateSR(newSR){
   } else {
     badge.classList.remove("iridescent");
   }
+
+  // Show daily SR change
+  const dailyChange = currentSR - startSR;
+  showDailyChange(dailyChange);
 }
 
-/* SR gain/loss popups (optional, triggered manually if needed) */
-function showPopup(text,color){
+// Show daily SR change popup (+green/-red)
+function showDailyChange(amount){
   const popup = document.createElement("div");
-  popup.className="popup";
-  popup.style.color=color;
-  popup.innerText=text;
-  popup.style.left="220px";
-  popup.style.top="50px";
+  popup.className="dailyChange";
+  popup.innerText = (amount>=0?"+":"") + amount;
+  popup.style.color = (amount>=0?"#00ff88":"#ff3355");
   document.getElementById("container").appendChild(popup);
   setTimeout(()=>{popup.remove();},1500);
 }
 
-/* --- Read SR from URL --- */
+// --- Read start SR and current SR from URL ---
 const params = new URLSearchParams(window.location.search);
-const srFromURL = params.get('sr');
-if(srFromURL){
-  const srValue = parseInt(srFromURL);
-  if(!isNaN(srValue)) updateSR(srValue);
-} else {
-  updateSR(0);
-}
+const startSRParam = params.get('startSR');
+const currentSRParam = params.get('sr');
+
+startSR = startSRParam ? parseInt(startSRParam) : 0;
+const srValue = currentSRParam ? parseInt(currentSRParam) : startSR;
+
+updateSR(srValue);
 </script>
 </body>
 </html>
