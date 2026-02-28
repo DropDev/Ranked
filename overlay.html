@@ -42,7 +42,7 @@ body { margin:0; background:transparent; font-family:'Arial Black',sans-serif; }
 </head>
 <body>
 <div id="container">
-  <img id="badge" src="badges/bronze.png">
+  <img id="badge" src="BO7/bronze.png">
   <div>
     <div class="rank" id="rankText">BRONZE I</div>
     <div class="sr" id="srText">0 SR</div>
@@ -57,26 +57,26 @@ let currentSR = 1;
 // Rank definitions
 function getRankData(sr) {
   const ranks = [
-    {min:1,name:"BRONZE I",badge:"badges/bronze.png"},
-    {min:300,name:"BRONZE II",badge:"badges/bronze.png"},
-    {min:600,name:"BRONZE III",badge:"badges/bronze.png"},
-    {min:900,name:"SILVER I",badge:"badges/silver.png"},
-    {min:1300,name:"SILVER II",badge:"badges/silver.png"},
-    {min:1700,name:"SILVER III",badge:"badges/silver.png"},
-    {min:2100,name:"GOLD I",badge:"badges/gold.png"},
-    {min:2600,name:"GOLD II",badge:"badges/gold.png"},
-    {min:1000000000,name:"GOLD III",badge:"badges/gold.png"},
-    {min:3600,name:"PLATINUM I",badge:"badges/platinum.png"},
-    {min:1000000000,name:"PLATINUM II",badge:"badges/platinum.png"},
-    {min:1000000000,name:"PLATINUM III",badge:"badges/platinum.png"},
-    {min:5400,name:"DIAMOND I",badge:"badges/diamond.png"},
-    {min:1000000000,name:"DIAMOND II",badge:"badges/diamond.png"},
-    {min:1000000000,name:"DIAMOND III",badge:"badges/diamond.png"},
-    {min:7500,name:"CRIMSON I",badge:"badges/crimson.png"},
-    {min:8300,name:"CRIMSON II",badge:"badges/crimson.png"},
-    {min:1000000000,name:"CRIMSON III",badge:"badges/crimson.png"},
-    {min:10000,name:"IRIDESCENT",badge:"badges/iridescent.png"},
-    {min:14000,name:"TOP 250",badge:"badges/top250.png"}
+    {min:1,name:"BRONZE I",badge:"BO7/bronze.png"},
+    {min:300,name:"BRONZE II",badge:"BO7/bronze.png"},
+    {min:600,name:"BRONZE III",badge:"BO7/bronze.png"},
+    {min:900,name:"SILVER I",badge:"BO7/silver.png"},
+    {min:1300,name:"SILVER II",badge:"BO7/silver.png"},
+    {min:1700,name:"SILVER III",badge:"BO7/silver.png"},
+    {min:2100,name:"GOLD I",badge:"BO7/gold.png"},
+    {min:2600,name:"GOLD II",badge:"BO7/gold.png"},
+    {min:1000000000,name:"GOLD III",badge:"BO7/gold.png"},
+    {min:3600,name:"PLATINUM I",badge:"BO7/platinum.png"},
+    {min:1000000000,name:"PLATINUM II",badge:"BO7/platinum.png"},
+    {min:1000000000,name:"PLATINUM III",badge:"BO7/platinum.png"},
+    {min:5400,name:"DIAMOND I",badge:"BO7/diamond.png"},
+    {min:1000000000,name:"DIAMOND II",badge:"BO7/diamond.png"},
+    {min:1000000000,name:"DIAMOND III",badge:"BO7/diamond.png"},
+    {min:7500,name:"CRIMSON I",badge:"BO7/crimson.png"},
+    {min:8300,name:"CRIMSON II",badge:"BO7/crimson.png"},
+    {min:1000000000,name:"CRIMSON III",badge:"BO7/crimson.png"},
+    {min:10000,name:"IRIDESCENT",badge:"BO7/iridescent.png"},
+    {min:14000,name:"TOP 250",badge:"BO7/top250.png"}
   ];
   let current = ranks[0];
   for(let i=0;i<ranks.length;i++){if(sr>=ranks[i].min){current=ranks[i];}}
